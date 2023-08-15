@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HeroScreen from './components/HeroScreen';
+import LoginGuard from './guards/LoginGuard';
+import AuthenticationComponent from './components/AuthenticationComponent';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/register' element={<AuthenticationComponent isRegistration />} />
+        <Route path='/login' element={<AuthenticationComponent />} />
+        {/* <Route path='/' element={<LoginGuard />}> */}
+        <Route path='/heroes' element={<HeroScreen />} />
+        {/* </Route> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
