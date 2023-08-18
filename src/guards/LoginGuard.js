@@ -1,9 +1,11 @@
 import { Outlet, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const LoginGuard = ({ isLoggedIn }) => {
+const LoginGuard = () => {
+  const { authToken } = useAuth();
   const loginPath = '/login';
 
-  if (!isLoggedIn) {
+  if (!authToken) {
     return <Navigate to={loginPath} />;
   }
 

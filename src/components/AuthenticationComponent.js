@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Container, Paper, TextField, Button, Typography, Box } from '@mui/material';
+import { Paper, TextField, Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import { register, login } from '../services/authService';
+import { registerTrainer, authenticateTrainer } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 import '../css/authentication.css';
+import Swal from 'sweetalert2';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -13,51 +15,108 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   alignItems: 'center'
 }));
 
-const StyledForm = styled('form')(({ theme }) => ({
-  width: '100%',
-  marginTop: theme.spacing(2)
-}));
-
-const StyledSubmitButton = styled(Button)(({ theme }) => ({
-  margin: theme.spacing(3, 0, 2)
-}));
-
 function AuthenticationComponent({ isRegistration }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [formatErrors, setFormatErrors] = useState({});
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (isRegistration) {
-        await register(username, password);
-      } else {
-        await login(username, password);
-      }
-      navigate('/heroes'); // Redirect after successful action
-    } catch (error) {
-      // Handle error (display message or set state)
-      console.error('Authentication error:', error);
+  const formatValidator = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const errors = { ...formatErrors };
+
+    if (!emailPattern.test(email)) {
+      errors.email = 'Please enter a valid email address.';
+    }
+
+    if (password.length < 8) {
+      errors.password = 'Password must be at least 8 characters long.';
+    } else if (!/[A-Z]/.test(password)) {
+      errors.password = 'Password must contain at least one capital letter.';
+    } else if (!/\d/.test(password)) {
+      errors.password = 'Password must contain at least one digit.';
+    } else if (!/\W/.test(password)) {
+      errors.password = 'Password must contain at least one non-alphanumeric character.';
+    }
+
+    setFormatErrors(errors);
+
+    if (errors.email === '' && errors.password === '') {
+      return false;
+    }
+
+    if (Object.keys(errors).length) {
+      return true;
+    }
+  };
+
+  const onChange = (field, value) => {
+    if (field === 'email') {
+      setEmail(value);
+    } else {
+      setPassword(value);
+    }
+
+    setFormatErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
+  };
+
+  const changeTabs = (path) => {
+    setEmail('');
+    setPassword('');
+    setFormatErrors({});
+    navigate(path);
+  };
+
+  const handleLogin = async () => {
+    const res = await authenticateTrainer(email, password);
+    login(res.token, res.trainerId);
+    if (!res.success) return Swal.fire('', res.error, 'error');
+    navigate('/heroes');
+  };
+
+  const handleRegister = async () => {
+    const res = await registerTrainer(email, password);
+    setEmail('');
+    setPassword('');
+    if (!res.success) return Swal.fire('', res.error, 'error');
+    Swal.fire('Registration successful', '', 'success');
+    navigate('/login');
+  };
+
+  const handleSubmit = async () => {
+    if (formatValidator() && isRegistration) return;
+
+    if (isRegistration) {
+      handleRegister();
+    } else {
+      handleLogin();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
     }
   };
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <div className='authentication-con'>
       <StyledPaper elevation={3}>
-        <Typography component='h1' variant='h5'>
-          {isRegistration ? 'Trainer Registration' : 'Trainer Login'}
-        </Typography>
-        <StyledForm onSubmit={handleSubmit}>
+        <div className='auth-title'>{isRegistration ? 'Trainer Registration' : 'Trainer Login'}</div>
+        <div>
           <TextField
             variant='outlined'
             margin='normal'
             required
             fullWidth
-            label='Username'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            label='Email'
+            value={email}
+            error={Boolean(formatErrors.email)}
+            helperText={formatErrors.email}
+            onChange={(e) => onChange('email', e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e)}
           />
           <TextField
             variant='outlined'
@@ -67,17 +126,20 @@ function AuthenticationComponent({ isRegistration }) {
             label='Password'
             type='password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            error={isRegistration && Boolean(formatErrors.password)}
+            helperText={isRegistration && formatErrors.password}
+            onChange={(e) => onChange('password', e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e)}
           />
-          <StyledSubmitButton type='submit' fullWidth variant='contained' color='primary'>
+          <Button fullWidth variant='contained' onClick={handleSubmit} className='auth-btn'>
             {isRegistration ? 'Register' : 'Login'}
-          </StyledSubmitButton>
-        </StyledForm>
+          </Button>
+        </div>
         <Box mt={2}>
           {isRegistration ? (
             <div>
               Already a member?{' '}
-              <span className='link' onClick={() => navigate('/login')}>
+              <span className='link' onClick={() => changeTabs('/login')}>
                 {' '}
                 Login
               </span>
@@ -85,7 +147,7 @@ function AuthenticationComponent({ isRegistration }) {
           ) : (
             <div>
               Not a member?{' '}
-              <span className='link' onClick={() => navigate('/register')}>
+              <span className='link' onClick={() => changeTabs('/register')}>
                 {' '}
                 Sign up
               </span>
@@ -93,7 +155,7 @@ function AuthenticationComponent({ isRegistration }) {
           )}
         </Box>
       </StyledPaper>
-    </Container>
+    </div>
   );
 }
 

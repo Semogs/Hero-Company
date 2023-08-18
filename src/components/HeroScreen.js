@@ -1,71 +1,75 @@
-import React, { useState } from 'react';
-import { Container, Paper, Typography, Box, Button, CircularProgress } from '@mui/material';
-import { styled } from '@mui/system';
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  marginTop: theme.spacing(4)
-}));
-
-const StyledHeroCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius
-}));
+import { useEffect, useMemo, useState } from 'react';
+import { getAllHeroes, trainHero } from '../services/heroService';
+import { useAuth } from '../context/AuthContext';
+import '../css/heroScreen.css';
+import Swal from 'sweetalert2';
+import HeroCard from './HeroCard';
+import ContentLoader from './widgets/ContentLoader';
 
 function HeroScreen() {
-  // Sample hero data (replace with actual fetched data)
-  const [heroes, setHeroes] = useState([
-    { id: 1, name: 'Hero 1', ability: 'Attacker', power: 80, currentPower: 80 },
-    { id: 2, name: 'Hero 2', ability: 'Defender', power: 70, currentPower: 70 }
-    // ... more hero data
-  ]);
+  const [heroes, setHeroes] = useState([]);
+  const [trainedHeroes, setTrainedHeroes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleTrainHero = (heroId) => {
-    // Implement training logic here
-    // Update the hero's currentPower based on training growth
+  const { authToken, trainerId, logout } = useAuth();
+
+  useEffect(() => {
+    const fetchHeroes = async () => {
+      const res = await getAllHeroes(authToken);
+      if (!res?.success) {
+        if (res) {
+          setLoading(false);
+          return Swal.fire('', res.error, 'warning');
+        }
+        return logout();
+      }
+      setHeroes(res.allHeroes);
+      setTrainedHeroes(res.allHeroes.filter((hero) => hero.trainer_id === Number(trainerId)));
+      setLoading(false);
+    };
+
+    fetchHeroes();
+  }, [authToken, trainerId, logout]);
+
+  const handleTrainHero = async (heroId) => {
+    const res = await trainHero(authToken, heroId);
+
+    if (!res?.success) {
+      if (res) {
+        setLoading(false);
+        return Swal.fire('', res.error, 'warning');
+      }
+      return logout();
+    }
+
     const updatedHeroes = heroes.map((hero) =>
-      hero.id === heroId ? { ...hero, currentPower: calculateNewPower(hero.currentPower) } : hero
+      hero.guid === heroId ? { ...hero, current_power: res.newPower, trainer_id: Number(trainerId) } : hero
     );
+
     setHeroes(updatedHeroes);
+    setTrainedHeroes(updatedHeroes.filter((hero) => hero.trainer_id === Number(trainerId)));
   };
 
-  const calculateNewPower = (currentPower) => {
-    const growthPercentage = Math.random() * 0.1; // Random growth between 0% to 10%
-    const newPower = currentPower * (1 + growthPercentage);
-    return Math.round(newPower * 100) / 100; // Round to 2 decimal places
-  };
-
-  const renderHeroCards = () => {
-    return heroes
-      .slice() // Clone the array to prevent mutating the original data
-      .sort((a, b) => b.currentPower - a.currentPower) // Sort by currentPower in descending order
-      .map((hero) => (
-        <StyledHeroCard key={hero.id}>
-          <Typography variant='h6'>{hero.name}</Typography>
-          <Typography variant='body2'>Ability: {hero.ability}</Typography>
-          <Typography variant='body2'>Current Power: {hero.currentPower}</Typography>
-          <Button variant='contained' color='primary' onClick={() => handleTrainHero(hero.id)}>
-            Train Hero
-          </Button>
-        </StyledHeroCard>
-      ));
-  };
+  const displayedHeroes = useMemo(
+    () => heroes.filter((hero) => !trainedHeroes.find((tHero) => tHero.guid === hero.guid)),
+    [heroes, trainedHeroes]
+  );
 
   return (
-    <Container component='main' maxWidth='lg'>
-      <StyledPaper elevation={3}>
-        <Typography component='h1' variant='h5'>
-          Heroes Screen
-        </Typography>
-        {heroes.length === 0 ? (
-          <CircularProgress /> // Show loading indicator if data is being fetched
-        ) : (
-          renderHeroCards()
-        )}
-      </StyledPaper>
-    </Container>
+    <div className='hero-screen-con'>
+      {loading ? <ContentLoader /> : null}
+      <div>
+        <div className='heroes-title'>Your Heroes</div>
+        <div className='hero-card-con'>
+          <HeroCard heroList={trainedHeroes} handleTrainHero={handleTrainHero} />
+        </div>
+        <hr className='hero-screen-separator' />
+        <div className='heroes-title mt-20'>All Heroes</div>
+        <div className='hero-card-con'>
+          <HeroCard heroList={displayedHeroes} handleTrainHero={handleTrainHero} />
+        </div>
+      </div>
+    </div>
   );
 }
 

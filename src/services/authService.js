@@ -1,20 +1,20 @@
 import axios from 'axios';
 import config from '../config';
 
-export async function register(username, password) {
+export async function registerTrainer(email, password) {
   try {
-    const res = await axios.post(config.registerTrainerEndpoint, { username, password });
+    const res = await axios.post(config.registerTrainerEndpoint, { email, password });
     return res.data;
   } catch (error) {
-    throw error;
+    console.log(error.response.data.error);
   }
 }
 
-export async function login(username, password) {
+export async function authenticateTrainer(email, password) {
   try {
-    const res = await axios.post(config.loginTrainerEndpoint, { username, password });
+    const res = await axios.post(config.loginTrainerEndpoint, { email, password });
     return res.data;
   } catch (error) {
-    throw error;
+    console.log(error.response.data.error);
   }
 }
