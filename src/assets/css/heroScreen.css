@@ -2,7 +2,7 @@
   font-size: 1.5em;
   font-weight: bold;
   padding: 10px;
-  color: #666;
+  color: #fff;
 }
 
 .hero-screen-con {
@@ -13,25 +13,30 @@
 }
 
 .hero-card {
-  background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 25px;
-  margin: 20px;
-  width: 25%;
+  margin: 25px 5px;
+  width: 300px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
 }
 
+.hero-card-con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .hero-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.hero-title {
+.hero-card-title {
   margin: 0;
   font-size: 18px;
-  color: #666;
+  color: #fff;
 }
 
 .hero-content {
@@ -41,15 +46,25 @@
 .hero-text {
   margin: 6px 0;
   font-size: 14px;
-  color: #777;
+  font-weight: 500;
+  color: #fff;
+}
+
+.hero-current-power {
+  color: #fff;
+  font-weight: 500;
+  margin: 0;
+  font-size: 18px;
+  width: 55px;
 }
 
 .hero-button {
-  background-color: #976bff !important;
+  background-color: #00b0ff !important;
   color: #fff;
   padding: 8px 16px !important;
   margin-top: 10px !important;
-  font-size: 14px;
+  font-size: 1rem !important;
+  text-transform: capitalize !important;
   width: 100%;
 }
 
@@ -61,17 +76,40 @@
 .hero-card-ability {
   text-transform: capitalize;
   margin: 0;
-  color: #666;
+  color: #fff;
+  position: relative;
+}
+
+.hero-ability-img-attack {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  z-index: -1;
+  transform: translateY(-50%);
+}
+
+.hero-ability-img-defend {
+  width: 50px !important;
+  height: 50px !important;
+  position: absolute;
+  top: 50%;
+  color: #00b0ff !important;
+  left: 15px;
+  z-index: -1;
+  transform: translateY(-50%);
 }
 
 .hero-card-con {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .hero-button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3 !important;
 }
 
 .hero-screen-separator {
@@ -80,7 +118,7 @@
 
 @media (max-width: 1250px) {
   .hero-card {
-    width: 38%;
+    width: 40%;
   }
 }
 

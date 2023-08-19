@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { getAllHeroes, trainHero } from '../services/heroService';
 import { useAuth } from '../context/AuthContext';
-import '../css/heroScreen.css';
+import '../assets/css/heroScreen.css';
 import Swal from 'sweetalert2';
 import HeroCard from './HeroCard';
 import ContentLoader from './widgets/ContentLoader';
+import backgroundImage from '../assets/images/hero_screen_bg.jpg';
 
 function HeroScreen() {
   const [heroes, setHeroes] = useState([]);
@@ -56,7 +57,13 @@ function HeroScreen() {
   );
 
   return (
-    <div className='hero-screen-con'>
+    <div
+      className='hero-screen-con'
+      style={{
+        background: `url(${backgroundImage}) no-repeat center center fixed`,
+        backgroundSize: 'cover'
+      }}
+    >
       {loading ? <ContentLoader /> : null}
       <div>
         <div className='heroes-title'>Your Heroes</div>
@@ -64,7 +71,7 @@ function HeroScreen() {
           <HeroCard heroList={trainedHeroes} handleTrainHero={handleTrainHero} />
         </div>
         <hr className='hero-screen-separator' />
-        <div className='heroes-title mt-20'>All Heroes</div>
+        <div className='heroes-title mt-50'>All Heroes</div>
         <div className='hero-card-con'>
           <HeroCard heroList={displayedHeroes} handleTrainHero={handleTrainHero} />
         </div>

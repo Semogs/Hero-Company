@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Paper, TextField, Box, Button } from '@mui/material';
+import { Paper, TextField, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { registerTrainer, authenticateTrainer } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
-import '../css/authentication.css';
+import '../assets/css/authentication.css';
 import Swal from 'sweetalert2';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -12,7 +12,17 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginTop: theme.spacing(4),
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center'
+  alignItems: 'center',
+  borderRadius: '10px',
+  [theme.breakpoints.down('sm')]: {
+    width: '80%'
+  },
+  [theme.breakpoints.up('md')]: {
+    width: '45%'
+  },
+  [theme.breakpoints.up('lg')]: {
+    width: '35%'
+  }
 }));
 
 function AuthenticationComponent({ isRegistration }) {
@@ -104,7 +114,7 @@ function AuthenticationComponent({ isRegistration }) {
   return (
     <div className='authentication-con'>
       <StyledPaper elevation={3}>
-        <div className='auth-title'>{isRegistration ? 'Trainer Registration' : 'Trainer Login'}</div>
+        <div className='auth-title'>{isRegistration ? 'Register to become a trainer!' : 'Welcome back, Trainer!'}</div>
         <div>
           <TextField
             variant='outlined'
@@ -135,25 +145,23 @@ function AuthenticationComponent({ isRegistration }) {
             {isRegistration ? 'Register' : 'Login'}
           </Button>
         </div>
-        <Box mt={2}>
-          {isRegistration ? (
-            <div>
-              Already a member?{' '}
-              <span className='link' onClick={() => changeTabs('/login')}>
-                {' '}
-                Login
-              </span>
-            </div>
-          ) : (
-            <div>
-              Not a member?{' '}
-              <span className='link' onClick={() => changeTabs('/register')}>
-                {' '}
-                Sign up
-              </span>
-            </div>
-          )}
-        </Box>
+        {isRegistration ? (
+          <div className='mt-20'>
+            Already a member?{' '}
+            <span className='auth-link' onClick={() => changeTabs('/login')}>
+              {' '}
+              Login
+            </span>
+          </div>
+        ) : (
+          <div className='mt-20'>
+            Not a member?{' '}
+            <span className='auth-link' onClick={() => changeTabs('/register')}>
+              {' '}
+              Sign up
+            </span>
+          </div>
+        )}
       </StyledPaper>
     </div>
   );
