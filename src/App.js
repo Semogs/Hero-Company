@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, HashRouter } from 'react-router-dom';
 import HeroScreen from './components/HeroScreen';
 import LoginGuard from './guards/LoginGuard';
 import AuthenticationComponent from './components/AuthenticationComponent';
@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path='/register' element={<AuthenticationComponent isRegistration />} />
           <Route path='/login' element={<AuthenticationComponent />} />
@@ -17,7 +17,7 @@ function App() {
           </Route>
           <Route path='/heroes' element={<HeroScreen />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
