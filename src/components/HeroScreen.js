@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import HeroCard from './HeroCard';
 import ContentLoader from './widgets/ContentLoader';
 import backgroundImage from '../assets/images/hero_screen_bg.jpg';
-import { Button } from '@mui/base';
+import { Button } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 function HeroScreen() {
@@ -60,8 +60,7 @@ function HeroScreen() {
 
   return (
     <>
-      <Button className='logout-button' onClick={logout} variant='contained'>
-        <LogoutIcon />
+      <Button className='logout-button' onClick={logout} variant='contained' startIcon={<LogoutIcon />}>
         Logout
       </Button>
       {loading ? <ContentLoader /> : null}
