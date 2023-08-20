@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import HeroCard from './HeroCard';
 import ContentLoader from './widgets/ContentLoader';
 import backgroundImage from '../assets/images/hero_screen_bg.jpg';
+import { Button } from '@mui/base';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function HeroScreen() {
   const [heroes, setHeroes] = useState([]);
@@ -57,26 +59,31 @@ function HeroScreen() {
   );
 
   return (
-    <div
-      className='hero-screen-con'
-      style={{
-        background: `url(${backgroundImage}) no-repeat center center fixed`,
-        backgroundSize: 'cover'
-      }}
-    >
+    <>
+      <Button className='logout-button' onClick={logout} startIcon={<LogoutIcon />}>
+        Logout
+      </Button>
       {loading ? <ContentLoader /> : null}
-      <div>
-        <div className='heroes-title'>Your Heroes</div>
-        <div className='hero-card-con'>
-          <HeroCard heroList={trainedHeroes} handleTrainHero={handleTrainHero} />
-        </div>
-        <hr className='hero-screen-separator' />
-        <div className='heroes-title mt-50'>All Heroes</div>
-        <div className='hero-card-con'>
-          <HeroCard heroList={displayedHeroes} handleTrainHero={handleTrainHero} />
+      <div
+        className='hero-screen-con'
+        style={{
+          background: `url(${backgroundImage}) no-repeat center center fixed`,
+          backgroundSize: 'cover'
+        }}
+      >
+        <div>
+          <div className='heroes-title'>Your Heroes</div>
+          <div className='hero-card-con'>
+            <HeroCard heroList={trainedHeroes} handleTrainHero={handleTrainHero} />
+          </div>
+          <hr className='hero-screen-separator' />
+          <div className='heroes-title mt-50'>All Heroes</div>
+          <div className='hero-card-con'>
+            <HeroCard heroList={displayedHeroes} handleTrainHero={handleTrainHero} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
