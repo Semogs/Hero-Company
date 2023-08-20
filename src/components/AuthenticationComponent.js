@@ -114,7 +114,7 @@ function AuthenticationComponent({ isRegistration }) {
   return (
     <div className='authentication-con'>
       <StyledPaper elevation={3}>
-        <div className='auth-title'>{isRegistration ? 'Register to become a trainer!' : 'Welcome back, Trainer!'}</div>
+        <div className='auth-title'>{isRegistration ? 'Register to become a trainer!' : 'Welcome Trainer!'}</div>
         <div>
           <TextField
             variant='outlined'

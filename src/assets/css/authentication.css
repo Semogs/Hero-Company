@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom right, rgba(26, 35, 126, 0.7), rgba(0, 176, 255, 0.7));
+  background: linear-gradient(to bottom right, rgba(26, 55, 126, 0.7), rgba(0, 176, 255, 0.7));
   height: 100vh;
 }
 
