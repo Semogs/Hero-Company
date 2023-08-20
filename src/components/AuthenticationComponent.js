@@ -42,19 +42,21 @@ function AuthenticationComponent({ isRegistration }) {
       errors.email = 'Please enter a valid email address.';
     }
 
-    if (password.length < 8 && isRegistration) {
-      errors.password = 'Password must be at least 8 characters long.';
-    } else if (!/[A-Z]/.test(password)) {
-      errors.password = 'Password must contain at least one capital letter.';
-    } else if (!/\d/.test(password)) {
-      errors.password = 'Password must contain at least one digit.';
-    } else if (!/\W/.test(password)) {
-      errors.password = 'Password must contain at least one non-alphanumeric character.';
+    if (isRegistration) {
+      if (password.length < 8) {
+        errors.password = 'Password must be at least 8 characters long.';
+      } else if (!/[A-Z]/.test(password)) {
+        errors.password = 'Password must contain at least one capital letter.';
+      } else if (!/\d/.test(password)) {
+        errors.password = 'Password must contain at least one digit.';
+      } else if (!/\W/.test(password)) {
+        errors.password = 'Password must contain at least one non-alphanumeric character.';
+      }
     }
 
     setFormatErrors(errors);
 
-    if (errors.email === '' && errors.password === '') {
+    if (errors.email === '' || errors.password === '') {
       return false;
     }
 
