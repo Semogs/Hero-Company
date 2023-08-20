@@ -6,6 +6,12 @@
   height: 100vh;
 }
 
+.auth-input-con {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .auth-title {
   font-size: 1.5rem;
   font-weight: bold;

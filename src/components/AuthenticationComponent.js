@@ -14,11 +14,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   borderRadius: '10px',
-  [theme.breakpoints.down('sm')]: {
+  width: '55%',
+  [theme.breakpoints.down('xs')]: {
     width: '80%'
   },
   [theme.breakpoints.up('md')]: {
-    width: '45%'
+    width: '55%'
   },
   [theme.breakpoints.up('lg')]: {
     width: '35%'
@@ -80,6 +81,7 @@ function AuthenticationComponent({ isRegistration }) {
   };
 
   const handleLogin = async () => {
+    if (formatValidator()) return;
     const res = await authenticateTrainer(email, password);
     login(res.token, res.trainerId);
     if (!res.success) return Swal.fire('', res.error, 'error');
@@ -87,6 +89,7 @@ function AuthenticationComponent({ isRegistration }) {
   };
 
   const handleRegister = async () => {
+    if (formatValidator()) return;
     const res = await registerTrainer(email, password);
     setEmail('');
     setPassword('');
@@ -96,8 +99,6 @@ function AuthenticationComponent({ isRegistration }) {
   };
 
   const handleSubmit = async () => {
-    if (formatValidator() && isRegistration) return;
-
     if (isRegistration) {
       handleRegister();
     } else {
@@ -115,7 +116,7 @@ function AuthenticationComponent({ isRegistration }) {
     <div className='authentication-con'>
       <StyledPaper elevation={3}>
         <div className='auth-title'>{isRegistration ? 'Register to become a trainer!' : 'Welcome Trainer!'}</div>
-        <div>
+        <div className='auth-input-con'>
           <TextField
             variant='outlined'
             margin='normal'
