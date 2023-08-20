@@ -38,9 +38,13 @@ function AuthenticationComponent({ isRegistration }) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const errors = { ...formatErrors };
 
+    debugger;
+
     if (!emailPattern.test(email)) {
       errors.email = 'Please enter a valid email address.';
     }
+
+    debugger;
 
     if (password.length < 8) {
       errors.password = 'Password must be at least 8 characters long.';
@@ -51,6 +55,8 @@ function AuthenticationComponent({ isRegistration }) {
     } else if (!/\W/.test(password)) {
       errors.password = 'Password must contain at least one non-alphanumeric character.';
     }
+
+    debugger;
 
     setFormatErrors(errors);
 
