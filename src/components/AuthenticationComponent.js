@@ -31,8 +31,8 @@ function AuthenticationComponent({ isRegistration }) {
   const [password, setPassword] = useState('');
   const [formatErrors, setFormatErrors] = useState({});
 
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const formatValidator = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
