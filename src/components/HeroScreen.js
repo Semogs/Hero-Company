@@ -60,10 +60,10 @@ function HeroScreen() {
 
   return (
     <>
+      {loading ? <ContentLoader /> : null}
       <Button className='logout-button' onClick={logout} variant='contained' startIcon={<LogoutIcon />}>
         Logout
       </Button>
-      {loading ? <ContentLoader /> : null}
       <div
         className='hero-screen-con'
         style={{
