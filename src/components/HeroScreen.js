@@ -60,7 +60,8 @@ function HeroScreen() {
 
   return (
     <>
-      <Button className='logout-button' onClick={logout} startIcon={<LogoutIcon />}>
+      <Button className='logout-button' onClick={logout} variant='contained'>
+        <LogoutIcon />
         Logout
       </Button>
       {loading ? <ContentLoader /> : null}
