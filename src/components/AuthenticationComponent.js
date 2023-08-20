@@ -38,15 +38,11 @@ function AuthenticationComponent({ isRegistration }) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const errors = { ...formatErrors };
 
-    debugger;
-
     if (!emailPattern.test(email)) {
       errors.email = 'Please enter a valid email address.';
     }
 
-    debugger;
-
-    if (password.length < 8) {
+    if (password.length < 8 && isRegistration) {
       errors.password = 'Password must be at least 8 characters long.';
     } else if (!/[A-Z]/.test(password)) {
       errors.password = 'Password must contain at least one capital letter.';
@@ -55,8 +51,6 @@ function AuthenticationComponent({ isRegistration }) {
     } else if (!/\W/.test(password)) {
       errors.password = 'Password must contain at least one non-alphanumeric character.';
     }
-
-    debugger;
 
     setFormatErrors(errors);
 
@@ -143,8 +137,8 @@ function AuthenticationComponent({ isRegistration }) {
             label='Password'
             type='password'
             value={password}
-            error={isRegistration && Boolean(formatErrors.password)}
-            helperText={isRegistration && formatErrors.password}
+            error={Boolean(formatErrors.password)}
+            helperText={formatErrors.password}
             onChange={(e) => onChange('password', e.target.value)}
             onKeyDown={(e) => handleKeyDown(e)}
           />
