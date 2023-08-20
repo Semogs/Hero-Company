@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Heroes-Company-UI/static/css/main.52b1b754.css",
-    "main.js": "/Heroes-Company-UI/static/js/main.505590d3.js",
+    "main.js": "/Heroes-Company-UI/static/js/main.c9828c30.js",
     "static/media/attack_icon.png": "/Heroes-Company-UI/static/media/attack_icon.8ed53ae488349ed18cfe.png",
     "static/media/hero_screen_bg.jpg": "/Heroes-Company-UI/static/media/hero_screen_bg.41f1918f35f03393a0e7.jpg",
     "index.html": "/Heroes-Company-UI/index.html",
     "main.52b1b754.css.map": "/Heroes-Company-UI/static/css/main.52b1b754.css.map",
-    "main.505590d3.js.map": "/Heroes-Company-UI/static/js/main.505590d3.js.map"
+    "main.c9828c30.js.map": "/Heroes-Company-UI/static/js/main.c9828c30.js.map"
   },
   "entrypoints": [
     "static/css/main.52b1b754.css",
-    "static/js/main.505590d3.js"
+    "static/js/main.c9828c30.js"
   ]
 }

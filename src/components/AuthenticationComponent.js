@@ -54,7 +54,7 @@ function AuthenticationComponent({ isRegistration }) {
 
     setFormatErrors(errors);
 
-    if (errors.email && errors.password) {
+    if (errors.email === '' && errors.password === '') {
       return false;
     }
 
