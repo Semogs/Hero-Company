@@ -52,13 +52,17 @@ function AuthenticationComponent({ isRegistration }) {
       } else if (!/\W/.test(password)) {
         errors.password = 'Password must contain at least one non-alphanumeric character.';
       }
+    } else {
+      if (errors.email === '') {
+        errors.email = 'Please enter an email address.';
+      }
+
+      if (errors.password === '') {
+        errors.password = 'Please enter a password.';
+      }
     }
 
     setFormatErrors(errors);
-
-    if (errors.email === '' || errors.password === '') {
-      return false;
-    }
 
     if (Object.keys(errors).length) {
       return true;
