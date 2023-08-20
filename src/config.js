@@ -1,4 +1,4 @@
-const apiBaseUrl = 'https://git.heroku.com/hero-company-api.git' || 'http://localhost:9733/';
+const apiBaseUrl = 'https://hero-company-api-0ff826f7bd25.herokuapp.com/' || 'http://localhost:9733/';
 
 const endpoints = {
   registerTrainerEndpoint: apiBaseUrl + 'auth/register',
